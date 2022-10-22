@@ -113,7 +113,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":3000", nil)
 	defer client.Close()
 
 }
