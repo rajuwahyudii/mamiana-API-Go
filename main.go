@@ -7,15 +7,19 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"io"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
-
+func hello(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "Hello World")
+}
 // }
 func main() {
+	http.HandleFunc("/", hello)
 	// tips := map[string]interface{}{
 	// 	"1":  "Yth.Ibu Jangan lupa melakukan pemeriksaan kehamilan di Bidan setiap bulan atau jika mengalami tanda bahaya selama kehamilan.",
 	// 	"2":  "Tanda bahaya dalam kehamilan: keluar darah dari jalan lahir, ketuban pecah sebelum tanda persalinan, bengkak seluruh tubuh, sakit kepala hebat, kejang, demam lebih dari 2 hari, berat badan tidak naik.",
