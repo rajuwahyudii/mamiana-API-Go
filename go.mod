@@ -1,4 +1,4 @@
-module github.com/rajuwahyudii/mamiana-API-Go
+module mamiana-API-Go
 
 // +heroku goVersion go1.18
 go 1.18
