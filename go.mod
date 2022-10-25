@@ -1,4 +1,4 @@
-module example.com/m/v2
+module github.com/rajuwahyudii/mamiana-API-Go
 
 // +heroku goVersion go1.18
 go 1.18
