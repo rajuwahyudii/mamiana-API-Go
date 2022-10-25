@@ -1,1 +1,1 @@
-web: m/v2
+web: mamiana-API-Go
