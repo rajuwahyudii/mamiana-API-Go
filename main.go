@@ -22,17 +22,19 @@ import (
 func main() {
 	loc, _ := time.LoadLocation("Asia/Jakarta")
 	clock := time.Now().In(loc).Format("15:04:05")
-	fmt.Println(clock)
+	// fmt.Println(clock)
 	// menu(clock)
-	// recursif(clock)
+	recursif(clock)
 
 }
-func serve(dtime string) {
+func serve() {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
+		loc, _ := time.LoadLocation("Asia/Jakarta")
+		time := time.Now().In(loc).Format("15:04:05")
 
 		c.JSON(http.StatusOK, gin.H{
-			"message": dtime,
+			"message": time,
 		})
 
 	})
@@ -47,7 +49,8 @@ func recursif(clock string) string {
 		clock = time.Now().In(loc).Format("15:04:05")
 		didntReport(clock)
 		changedDay(clock)
-		serve(clock)
+		serve()
+		log.Println(clock)
 		fmt.Println(clock)
 		duration := time.Second
 		time.Sleep(duration)
@@ -58,7 +61,7 @@ func recursif(clock string) string {
 		clock = time.Now().In(loc).Format("15:04:05")
 		menu(clock)
 		fmt.Println(clock)
-		serve(clock)
+		serve()
 		duration := time.Second
 		time.Sleep(duration)
 		return recursif(clock)
@@ -66,7 +69,7 @@ func recursif(clock string) string {
 	loc, _ := time.LoadLocation("Asia/Jakarta")
 	clock = time.Now().In(loc).Format("15:04:05")
 	fmt.Println(clock)
-	serve(clock)
+	serve()
 	duration := time.Second
 	time.Sleep(duration)
 	return recursif(clock)
