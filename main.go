@@ -37,9 +37,10 @@ func serve(clock string) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": time,
 		})
+		recursif(time)
 
 	})
-	recursif(clock)
+
 	r.Run()
 
 }
@@ -57,7 +58,7 @@ func recursif(clock string) string {
 		time.Sleep(duration)
 		return recursif(clock)
 	}
-	if clock == "08:40:00" {
+	if clock == "09:10:00" {
 		loc, _ := time.LoadLocation("Asia/Jakarta")
 		clock = time.Now().In(loc).Format("15:04:05")
 		didntReport(clock)
