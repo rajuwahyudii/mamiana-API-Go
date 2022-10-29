@@ -20,17 +20,19 @@ import (
 
 // }
 func main() {
-	clock := time.Now().Format("15:04:05")
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	clock := time.Now().In(loc).Format("15:04:05")
+	fmt.Println(clock)
 	// menu(clock)
-	recursif(clock)
+	// recursif(clock)
 
 }
-func serve() {
+func serve(dtime string) {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
-			"message": "a",
+			"message": dtime,
 		})
 
 	})
@@ -41,27 +43,30 @@ func serve() {
 func recursif(clock string) string {
 
 	if clock == "00:00:00" {
-		clock = time.Now().Format("15:04:05")
+		loc, _ := time.LoadLocation("Asia/Jakarta")
+		clock = time.Now().In(loc).Format("15:04:05")
 		didntReport(clock)
 		changedDay(clock)
-		serve()
+		serve(clock)
 		fmt.Println(clock)
 		duration := time.Second
 		time.Sleep(duration)
 		return recursif(clock)
 	}
 	if clock == "20:00:00" {
-		clock = time.Now().Format("15:04:05")
+		loc, _ := time.LoadLocation("Asia/Jakarta")
+		clock = time.Now().In(loc).Format("15:04:05")
 		menu(clock)
 		fmt.Println(clock)
-		serve()
+		serve(clock)
 		duration := time.Second
 		time.Sleep(duration)
 		return recursif(clock)
 	}
-	clock = time.Now().Format("15:04:05")
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	clock = time.Now().In(loc).Format("15:04:05")
 	fmt.Println(clock)
-	serve()
+	serve(clock)
 	duration := time.Second
 	time.Sleep(duration)
 	return recursif(clock)
