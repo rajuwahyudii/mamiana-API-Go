@@ -13,6 +13,7 @@ import (
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -22,17 +23,19 @@ func main() {
 	clock := time.Now().Format("15:04:05")
 	// menu(clock)
 	recursif(clock)
-	// r := gin.Default()
-	// r.GET("/", func(c *gin.Context) {
 
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"message": "a",
-	// 	})
+}
+func serve() {
+	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
 
-	// })
+		c.JSON(http.StatusOK, gin.H{
+			"message": "a",
+		})
 
-	// r.Run()
+	})
 
+	r.Run()
 }
 
 func recursif(clock string) string {
@@ -41,6 +44,7 @@ func recursif(clock string) string {
 		clock = time.Now().Format("15:04:05")
 		didntReport(clock)
 		changedDay(clock)
+		serve()
 		fmt.Println(clock)
 		duration := time.Second
 		time.Sleep(duration)
@@ -50,12 +54,14 @@ func recursif(clock string) string {
 		clock = time.Now().Format("15:04:05")
 		menu(clock)
 		fmt.Println(clock)
+		serve()
 		duration := time.Second
 		time.Sleep(duration)
 		return recursif(clock)
 	}
 	clock = time.Now().Format("15:04:05")
 	fmt.Println(clock)
+	serve()
 	duration := time.Second
 	time.Sleep(duration)
 	return recursif(clock)
