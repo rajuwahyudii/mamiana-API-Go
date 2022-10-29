@@ -58,17 +58,7 @@ func recursif(clock string) string {
 		time.Sleep(duration)
 		return recursif(clock)
 	}
-	if clock == "09:57:00" {
-		loc, _ := time.LoadLocation("Asia/Jakarta")
-		clock = time.Now().In(loc).Format("15:04:05")
-		didntReport(clock)
-		changedDay(clock)
-		log.Println(clock)
-		fmt.Println(clock)
-		duration := time.Second
-		time.Sleep(duration)
-		return recursif(clock)
-	}
+
 	if clock == "20:00:00" {
 		loc, _ := time.LoadLocation("Asia/Jakarta")
 		clock = time.Now().In(loc).Format("15:04:05")
