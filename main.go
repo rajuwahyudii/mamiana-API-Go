@@ -68,6 +68,16 @@ func recursif(clock string) string {
 		time.Sleep(duration)
 		return recursif(clock)
 	}
+
+	if clock == "13:00:00" {
+		loc, _ := time.LoadLocation("Asia/Jakarta")
+		clock = time.Now().In(loc).Format("15:04:05")
+		menu2(clock)
+		fmt.Println(clock)
+		duration := time.Second
+		time.Sleep(duration)
+		return recursif(clock)
+	}
 	loc, _ := time.LoadLocation("Asia/Jakarta")
 	clock = time.Now().In(loc).Format("15:04:05")
 	fmt.Println(clock)
@@ -173,6 +183,48 @@ func changedDay(time string) {
 }
 func menu(time string) {
 	//Use Credential Firebase
+
+	a := ""
+	sa := option.WithCredentialsFile("./ServiceAccountKey.json")
+	app, err := firebase.NewApp(context.Background(), nil, sa)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	client, err := app.Firestore(context.Background())
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	dsnap := client.Collection("user").Where("role", "==", "user").Documents(context.Background())
+
+	for {
+		doc, err := dsnap.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			fmt.Println(err)
+		}
+		data := doc.Data()
+		nomorhp := data["nomorhp"]
+		nomorhp2 := nomorhp.(string)
+		hari := int(data["hari"].(int64))
+		a = "day" + strconv.Itoa(hari)
+		fmt.Println(hari)
+
+		test("Selamat malam ibu..\nIngin mengingatkan sekarang sudah memasuki jam 20.00 waktunya ibu untuk meminum obat. Segera melakukan konfirmasi melalui aplikasi Mamiana dengan mengupload obat yang akan diminum hari ini\nTerimakasih", nomorhp2)
+
+	}
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(a)
+	defer client.Close()
+
+}
+
+func menu2(time string) {
+	//Use Credential Firebase
 	tips := map[string]interface{}{
 		"1":  "Yth.Ibu Jangan lupa melakukan pemeriksaan kehamilan di Bidan setiap bulan atau jika mengalami tanda bahaya selama kehamilan.",
 		"2":  "Tanda bahaya dalam kehamilan: keluar darah dari jalan lahir, ketuban pecah sebelum tanda persalinan, bengkak seluruh tubuh, sakit kepala hebat, kejang, demam lebih dari 2 hari, berat badan tidak naik.",
@@ -230,51 +282,9 @@ func menu(time string) {
 		nomorhp := data["nomorhp"]
 		nomorhp2 := nomorhp.(string)
 		hari := int(data["hari"].(int64))
-
-		// id := data["id"].(string)
-		// schedule, err := client.Collection("user").Doc(id).Collection("day").Doc("day" + strconv.Itoa(hari)).Get(context.Background())
-		// if err != nil {
-		// 	fmt.Println(err)
-		// }
-
-		// deadline := schedule.Data()
-		// if time == "07:11:00" {
-		// 	client.Collection("user").Doc(id).Set(context.Background(), map[string]interface{}{
-		// 		"hari": hari + 1,
-		// 	}, firestore.MergeAll)
-		// 	fmt.Println("success changed day")
-		// }
-
-		// client.Collection("user").Doc(id).Collection("day").Doc("day"+strconv.Itoa(hari)).Set(context.Background(), map[string]interface{}{
-		// 	"status": "tidak",
-		// }, firestore.MergeAll)
 		a = "day" + strconv.Itoa(hari)
 		fmt.Println(hari)
-		// if time == "06:35:00" {
-		// 	if deadline["status"].(string) == "belum" {
-		// 		client.Collection("user").Doc(id).Collection("day").Doc("day"+strconv.Itoa(hari)).Set(context.Background(), map[string]interface{}{
-		// 			"status": "tidak",
-		// 		}, firestore.MergeAll)
-		// 		a = "a"
-		// 		fmt.Println(a)
 
-		// 	}
-		// 	client.Collection("user").Doc(id).Collection("day").Doc("day"+strconv.Itoa(hari)).Set(context.Background(), map[string]interface{}{
-		// 		"status": "tidak",
-		// 	}, firestore.MergeAll)
-		// 	a = "b"
-		// 	fmt.Println(a)
-		// 	if hari < 30 {
-		// 		client.Collection("user").Doc(id).Set(context.Background(), map[string]interface{}{
-		// 			"hari": hari + 1,
-		// 		}, firestore.MergeAll)
-		// 		a = "Report and day changed success"
-		// 		fmt.Println(a)
-		// 	}
-
-		// }
-
-		test("Selamat malam ibu..\nIngin mengingatkan sekarang sudah memasuki jam 20.00 waktunya ibu untuk meminum obat. Segera melakukan konfirmasi melalui aplikasi Mamiana dengan mengupload obat yang akan diminum hari ini\nTerimakasih", nomorhp.(string))
 		test("Tips : \n\n"+tips[strconv.Itoa(hari)].(string), nomorhp2)
 
 	}
@@ -283,6 +293,7 @@ func menu(time string) {
 	}
 	fmt.Println(a)
 	defer client.Close()
+
 }
 
 func test(message, phone string) {
